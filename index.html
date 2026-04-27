@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#080808"/>
+<title>SROS — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"/>
+<style>
+/* ═══════════════════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════════════════ */
+:root {
+  --bg:         #080808;
+  --bg-2:       #0F0F0F;
+  --bg-3:       #161616;
+  --surface:    #1C1C1C;
+  --surface-2:  #242424;
+  --border:     rgba(255,255,255,0.07);
+  --border-2:   rgba(255,255,255,0.13);
+  --gold:       #C9963A;
+  --gold-light: #E8B95A;
+  --gold-dim:   rgba(201,150,58,0.12);
+  --gold-glow:  rgba(201,150,58,0.22);
+  --text:       #F0EBE0;
+  --text-2:     #9A8E7E;
+  --text-3:     #5A4E3E;
+  --green:      #4CAF7D;
+  --green-dim:  rgba(76,175,125,0.12);
+  --orange:     #E07B35;
+  --orange-dim: rgba(224,123,53,0.12);
+  --red:        #E05555;
+  --red-dim:    rgba(224,85,85,0.12);
+  --blue:       #5B9BD5;
+  --blue-dim:   rgba(91,155,213,0.12);
+  --fd:         'Playfair Display', Georgia, serif;
+  --fb:         'DM Sans', system-ui, sans-serif;
+  --nav-h:      64px;
+  --hdr-h:      56px;
+  --r:          10px;
+  --rl:         16px;
+  --rxl:        24px;
+  --t:          0.2s ease;
+  --shadow:     0 4px 24px rgba(0,0,0,0.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;padding-bottom:var(--nav-h)}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+input,textarea,select{font-family:inherit;color:inherit}
+img{display:block;max-width:100%}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:2px}
+h1,h2,h3,h4{font-family:var(--fd);font-weight:600;line-height:1.2}
+.hidden{display:none!important}
+
+/* ═══════════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--r);font-size:14px;font-weight:600;transition:all var(--t);white-space:nowrap;line-height:1}
+.btn-primary{background:var(--gold);color:#000}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-secondary{background:var(--surface-2);color:var(--text);border:1px solid var(--border-2)}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--border-2);color:var(--text)}
+.btn-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(76,175,125,0.2)}
+.btn-green:hover{background:var(--green);color:#000}
+.btn-red{background:var(--red-dim);color:var(--red);border:1px solid rgba(224,85,85,0.2)}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:8px}
+.btn-lg{padding:14px 28px;font-size:16px;border-radius:var(--rl)}
+.btn-full{width:100%}
+.btn:disabled{opacity:0.45;pointer-events:none}
+
+/* ═══════════════════════════════════════════════════
+   FORMS
+═══════════════════════════════════════════════════ */
+.input-field{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:13px 16px;border-radius:var(--r);font-size:15px;outline:none;transition:border-color var(--t)}
+.input-field:focus{border-color:var(--gold)}
+.input-field::placeholder{color:var(--text-3)}
+textarea.input-field{resize:vertical;min-height:80px}
+
+/* ═══════════════════════════════════════════════════
+   BADGE
+═══════════════════════════════════════════════════ */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.badge-gold{background:var(--gold-dim);color:var(--gold-light);border:1px solid rgba(201,150,58,.2)}
+.badge-green{background:var(--green-dim);color:var(--green)}
+.badge-orange{background:var(--orange-dim);color:var(--orange)}
+.badge-red{background:var(--red-dim);color:var(--red)}
+.badge-blue{background:var(--blue-dim);color:var(--blue)}
+
+/* ═══════════════════════════════════════════════════
+   SPINNER / LOADING
+═══════════════════════════════════════════════════ */
+.spinner{width:20px;height:20px;border:2px solid var(--border-2);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
+.loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:80px 24px;color:var(--text-2);font-size:14px}
+
+/* ═══════════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════════ */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@keyframes ai-pulse{0%{transform:scale(.9);opacity:.4}70%{transform:scale(1.35);opacity:0}100%{opacity:0}}
+@keyframes typing-dot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.fade-in{animation:fadeIn .35s ease both}
+.fade-up{animation:fadeUp .4s ease both}
+.scale-in{animation:scaleIn .3s ease both}
+.shake{animation:shake .4s ease}
+.pulse{animation:pulse 1.5s ease infinite}
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════ */
+.toast{position:fixed;bottom:calc(var(--nav-h) + 12px);left:50%;transform:translateX(-50%) translateY(12px);background:var(--surface-2);color:var(--text);border:1px solid var(--border-2);padding:11px 20px;border-radius:var(--r);font-size:13px;font-weight:500;opacity:0;pointer-events:none;transition:all .3s ease;z-index:9999;white-space:nowrap;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.t-success{border-color:rgba(76,175,125,.3)}
+.toast.t-error{border-color:rgba(224,85,85,.3)}
+.toast.t-gold{border-color:rgba(201,150,58,.4);color:var(--gold-light)}
+
+/* ═══════════════════════════════════════════════════
+   VIEWS (SPA)
+═══════════════════════════════════════════════════ */
+.view{display:none}
+.view.active{display:block;animation:fadeIn .3s ease}
+#view-auth{min-height:100vh;padding-bottom:0!important}
+#view-auth.active{display:flex;flex-direction:column;animation:none}
+
+/* ═══════════════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════════════ */
+.auth-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 32px 32px;text-align:center}
+.auth-emblem{width:84px;height:84px;border-radius:24px;background:var(--gold-dim);border:2px solid rgba(201,150,58,.3);display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:20px;box-shadow:0 0 48px rgba(201,150,58,.18)}
+.auth-rest-name{font-family:var(--fd);font-size:28px;font-weight:700;margin-bottom:5px}
+.auth-rest-tag{font-size:13px;color:var(--text-2);margin-bottom:0}
+.auth-card{background:var(--surface);border:1px solid var(--border-2);border-radius:var(--rxl) var(--rxl) 0 0;padding:28px 24px;width:100%;animation:fadeUp .4s ease}
+.auth-step-title{font-family:var(--fd);font-size:21px;font-weight:600;margin-bottom:6px}
+.auth-step-sub{font-size:13px;color:var(--text-2);margin-bottom:22px}
+.phone-row{display:flex;gap:10px;margin-bottom:16px}
+.country-code{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:13px 14px;font-size:15px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.otp-grid{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+.otp-box{width:52px;height:58px;background:var(--surface);border:1px solid var(--border-2);border-radius:var(--r);color:var(--text);font-size:24px;font-weight:700;text-align:center;outline:none;transition:border-color var(--t)}
+.otp-box:focus{border-color:var(--gold)}
+.auth-resend{font-size:13px;color:var(--text-2);text-align:center;margin-bottom:14px}
+.auth-resend span{color:var(--gold);font-weight:600;cursor:pointer}
+.auth-back{font-size:13px;color:var(--text-2);text-align:center;margin-top:12px;cursor:pointer}
+.auth-back:hover{color:var(--gold)}
+.auth-note{font-size:11.5px;color:var(--text-3);text-align:center;margin-top:12px;line-height:1.5}
+
+/* ═══════════════════════════════════════════════════
+   PAGE HEADER
+═══════════════════════════════════════════════════ */
+.page-header{position:sticky;top:0;z-index:100;background:rgba(8,8,8,.93);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border);height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:12px}
+.page-title{font-family:var(--fd);font-size:18px;font-weight:600}
+.page-sub{font-size:10px;color:var(--text-3);letter-spacing:.05em;text-transform:uppercase;margin-top:1px}
+
+/* ═══════════════════════════════════════════════════
+   BOTTOM NAV
+═══════════════════════════════════════════════════ */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:rgba(10,10,10,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding:0 8px env(safe-area-inset-bottom);z-index:500}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 4px;color:var(--text-3);font-size:10px;font-weight:500;letter-spacing:.03em;transition:all var(--t);border-radius:var(--r);border:none;background:none;cursor:pointer}
+.nav-item svg{width:22px;height:22px;stroke-width:1.8}
+.nav-item.active{color:var(--gold)}
+.nav-item .nav-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);position:absolute;top:4px}
+.nav-item-wrap{position:relative}
+
+/* ═══════════════════════════════════════════════════
+   AI FAB
+═══════════════════════════════════════════════════ */
+.ai-fab{position:fixed;bottom:calc(var(--nav-h) + 14px);right:18px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--gold) 0%,#A67530 100%);box-shadow:0 4px 22px rgba(201,150,58,.4);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#000;z-index:490;transition:all .25s ease;border:none;cursor:pointer}
+.ai-fab:hover{transform:scale(1.08);box-shadow:0 6px 32px rgba(201,150,58,.55)}
+.ai-fab:active{transform:scale(.95)}
+.ai-fab-ring{position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--gold);opacity:0;animation:ai-pulse 2.5s ease infinite;pointer-events:none}
+
+/* ═══════════════════════════════════════════════════
+   OVERLAYS & DRAWERS
+═══════════════════════════════════════════════════ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:700;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.overlay.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;bottom:0;left:0;right:0;background:var(--bg-2);border-top:1px solid var(--border-2);border-radius:var(--rxl) var(--rxl) 0 0;z-index:701;transform:translateY(100%);transition:transform .38s cubic-bezier(.32,.72,0,1);max-height:88vh;display:flex;flex-direction:column}
+.drawer.open{transform:translateY(0)}
+.drawer-handle{width:36px;height:4px;background:var(--border-2);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.drawer-header{padding:13px 18px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-shrink:0}
+.drawer-title{font-family:var(--fd);font-size:18px;font-weight:600}
+.drawer-close{width:30px;height:30px;border-radius:8px;background:var(--surface);color:var(--text-2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all var(--t);border:none;cursor:pointer}
+.drawer-close:hover{color:var(--text)}
+.drawer-body{flex:1;overflow-y:auto;padding:14px 18px}
+.drawer-footer{padding:14px 18px;padding-bottom:max(14px,env(safe-area-inset-bottom));border-top:1px solid var(--border);flex-shrink:0}
+
+/* ═══════════════════════════════════════════════════
+   AI CHAT
+═══════════════════════════════════════════════════ */
+.ai-drawer-header{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.ai-avatar{width:38px;height:38px;border-radius:11px;background:var(--gold-dim);border:1px solid rgba(201,150,58,.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ai-name{font-size:15px;font-weight:600}
+.ai-sub{font-size:11px;color:var(--text-2)}
+.ai-messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.ai-msg{max-width:86%;padding:11px 14px;border-radius:15px;font-size:14px;line-height:1.55;animation:fadeIn .3s ease}
+.ai-msg.bot{background:var(--surface);border:1px solid var(--border);border-bottom-left-radius:4px;align-self:flex-start}
+.ai-msg.user{background:var(--gold-dim);border:1px solid rgba(201,150,58,.18);color:var(--gold-light);border-bottom-right-radius:4px;align-self:flex-end}
+.ai-typing-row{display:flex;gap:5px;align-items:center;padding:4px 0}
+.ai-typing-row span{width:7px;height:7px;border-radius:50%;background:var(--text-3);animation:typing-dot 1.2s ease infinite}
+.ai-typing-row span:nth-child(2){animation-delay:.2s}
+.ai-typing-row span:nth-child(3){animation-delay:.4s}
+.ai-quick-btns{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 12px;flex-shrink:0}
+.ai-qbtn{padding:7px 13px;border-radius:100px;background:var(--surface);border:1px solid var(--border-2);font-size:12px;font-weight:500;color:var(--text-2);transition:all var(--t);cursor:pointer}
+.ai-qbtn:hover{color:var(--gold);border-color:rgba(201,150,58,.3)}
+.ai-input-row{padding:12px 18px;padding-bottom:max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0}
+.ai-input{flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:var(--r);font-size:14px;outline:none;transition:border-color var(--t)}
+.ai-input:focus{border-color:var(--gold)}
+.ai-input::placeholder{color:var(--text-3)}
+.ai-send{width:42px;height:42px;border-radius:10px;background:var(--gold);color:#000;font-size:17px;display:flex;align-items:center;justify-content:center;transition:all var(--t);flex-shrink:0;border:none;cursor:pointer}
+.ai-send:hover{background:var(--gold-light)}
+.ai-send:disabled{opacity:.4}
+
+/* ═══════════════════════════════════════════════════
+   HOME
+═══════════════════════════════════════════════════ */
+.greeting-wrap{padding:18px 18px 14px;display:flex;align-items:flex-start;justify-content:space-between}
+.greeting-time{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.greeting-name{font-family:var(--fd);font-size:23px;font-weight:600;line-height:1.1}
+.greeting-table{font-size:12px;color:var(--gold);margin-top:3px;font-weight:500}
+.notif-btn{width:38px;height:38px;border-radius:10px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;transition:all var(--t);position:relative;flex-shrink:0;cursor:pointer}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)}
+
+/* Loyalty banner */
+.loyalty-banner{margin:0 18px 18px;background:linear-gradient(135deg,#140f00 0%,#1a1400 60%,rgba(201,150,58,.07) 100%);border:1px solid rgba(201,150,58,.22);border-radius:var(--rxl);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all var(--t);position:relative;overflow:hidden}
+.loyalty-banner::after{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:rgba(201,150,58,.06);pointer-events:none}
+.loyalty-banner:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(201,150,58,.12)}
+.loy-ring{width:54px;height:54px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center}
+.loy-ring svg{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+.loy-ring-bg{fill:none;stroke:var(--border-2);stroke-width:3}
+.loy-ring-fill{fill:none;stroke:var(--gold);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .8s ease}
+.loy-ring-emoji{font-size:22px;position:relative;z-index:1}
+.loy-info{flex:1;min-width:0}
+.loy-tier{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+.loy-title{font-size:15px;font-weight:600;margin-bottom:2px}
+.loy-sub{font-size:11px;color:var(--text-2)}
+.loy-arrow{font-size:20px;color:var(--text-3)}
+
+/* Section rows */
+.sec-row{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:12px}
+.sec-label{font-size:11px;font-weight:600;color:var(--text-2);letter-spacing:.06em;text-transform:uppercase}
+.sec-link{font-size:12px;color:var(--gold);font-weight:500;cursor:pointer}
+
+/* Quick reorder */
+.reorder-card{margin:0 18px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.reorder-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.reorder-items{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reorder-total{font-size:12px;color:var(--gold);margin-top:2px}
+
+/* Featured card */
+.featured-card{margin:0 18px 18px;background:linear-gradient(135deg,var(--surface) 0%,rgba(201,150,58,.08) 100%);border:1px solid rgba(201,150,58,.2);border-radius:var(--rxl);padding:18px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all var(--t);position:relative;overflow:hidden}
+.featured-card::before{content:'';position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:var(--gold-glow);pointer-events:none}
+.featured-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,150,58,.15)}
+.feat-body{flex:1;min-width:0;position:relative;z-index:1}
+.feat-badge{font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.feat-name{font-family:var(--fd);font-size:20px;font-weight:600;margin-bottom:4px}
+.feat-desc{font-size:12px;color:var(--text-2);line-height:1.4;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.feat-price{font-size:17px;font-weight:700;color:var(--gold);margin-bottom:12px}
+.feat-cta{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:#000;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:700;transition:all var(--t)}
+.feat-cta:hover{background:var(--gold-light)}
+.feat-emoji{font-size:56px;flex-shrink:0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+
+/* Streak scroll */
+.streak-scroll{display:flex;gap:12px;overflow-x:auto;padding:0 18px 4px;scrollbar-width:none}
+.streak-scroll::-webkit-scrollbar{display:none}
+.streak-card{flex-shrink:0;width:166px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px;transition:all var(--t);position:relative;overflow:hidden;cursor:pointer}
+.streak-card:hover{border-color:var(--border-2);transform:translateY(-2px)}
+.streak-card.done{border-color:rgba(201,150,58,.3);background:linear-gradient(135deg,var(--surface) 0%,rgba(201,150,58,.06) 100%)}
+.streak-done-badge{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#000;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.streak-icon{font-size:26px;margin-bottom:8px}
+.streak-lbl{font-size:13px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.streak-desc{font-size:11px;color:var(--text-2);margin-bottom:10px;line-height:1.3}
+.streak-bar{height:4px;background:var(--border-2);border-radius:2px;overflow:hidden;margin-bottom:5px}
+.streak-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width .6s ease}
+.streak-prog{font-size:10px;color:var(--text-2)}
+.streak-reward{font-size:11px;color:var(--gold);font-weight:500;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);line-height:1.3}
+.streak-card.done .streak-reward{color:var(--green)}
+
+/* ═══════════════════════════════════════════════════
+   MENU PAGE
+═══════════════════════════════════════════════════ */
+.search-wrap{padding:10px 18px;position:relative}
+.search-wrap input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 44px 12px 16px;border-radius:var(--r);font-size:14px;outline:none;transition:border-color var(--t)}
+.search-wrap input:focus{border-color:var(--gold)}
+.search-wrap input::placeholder{color:var(--text-3)}
+.search-icon{position:absolute;right:30px;top:50%;transform:translateY(-50%);font-size:17px;pointer-events:none;color:var(--text-3)}
+.cat-bar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 18px 10px}
+.cat-bar::-webkit-scrollbar{display:none}
+.cat-tab{flex-shrink:0;padding:6px 16px;border-radius:100px;font-size:13px;font-weight:500;color:var(--text-2);background:var(--surface);border:1px solid var(--border);transition:all var(--t);cursor:pointer}
+.cat-tab:hover{color:var(--text)}
+.cat-tab.active{background:var(--gold-dim);color:var(--gold-light);border-color:rgba(201,150,58,.25);font-weight:600}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;padding:0 18px 110px}
+.menu-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:all var(--t);animation:fadeIn .35s ease both}
+.menu-card:hover{border-color:var(--border-2);transform:translateY(-2px)}
+.menu-card.unavail{opacity:.4;pointer-events:none}
+.menu-emoji-box{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,var(--bg-3) 0%,var(--surface-2) 100%);border-bottom:1px solid var(--border);position:relative;user-select:none}
+.pop-badge{position:absolute;top:6px;left:6px;background:var(--gold-dim);color:var(--gold-light);border:1px solid rgba(201,150,58,.2);font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:100px}
+.menu-body{padding:11px}
+.menu-name{font-size:13px;font-weight:600;margin-bottom:3px;line-height:1.3}
+.menu-desc{font-size:11px;color:var(--text-2);line-height:1.4;margin-bottom:9px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.menu-footer{display:flex;align-items:center;justify-content:space-between}
+.menu-price{font-size:14px;font-weight:700;color:var(--gold)}
+.add-btn{width:28px;height:28px;border-radius:7px;background:var(--gold);color:#000;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all var(--t);border:none;cursor:pointer}
+.add-btn:hover{background:var(--gold-light);transform:scale(1.1)}
+.add-btn.in-cart{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(201,150,58,.25);font-size:11px;font-weight:700}
+
+/* Cart FAB */
+.cart-fab{position:fixed;bottom:calc(var(--nav-h) + 14px);left:18px;background:var(--surface-2);border:1px solid var(--border-2);border-radius:100px;padding:10px 18px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;z-index:489;transition:all var(--t);box-shadow:var(--shadow);cursor:pointer}
+.cart-fab:hover{border-color:var(--gold)}
+.cart-fab-pill{background:var(--gold);color:#000;font-size:11px;font-weight:700;border-radius:100px;padding:2px 8px}
+
+/* Cart items */
+.cart-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.cart-item:last-child{border-bottom:none}
+.cart-emoji{font-size:26px;width:42px;height:42px;background:var(--surface);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cart-info{flex:1;min-width:0}
+.cart-iname{font-size:13px;font-weight:600}
+.cart-iprice{font-size:12px;color:var(--gold)}
+.qty-ctrl{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.qty-btn{width:26px;height:26px;border-radius:7px;background:var(--surface-2);border:1px solid var(--border);font-size:15px;color:var(--text);display:flex;align-items:center;justify-content:center;transition:all var(--t);cursor:pointer}
+.qty-btn:hover{border-color:var(--border-2)}
+.qty-num{font-size:13px;font-weight:600;min-width:16px;text-align:center}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cart-total-lbl{font-size:13px;color:var(--text-2)}
+.cart-total-amt{font-size:22px;font-weight:700;color:var(--gold);font-family:var(--fd)}
+
+/* ═══════════════════════════════════════════════════
+   ORDERS PAGE
+═══════════════════════════════════════════════════ */
+.active-order-card{margin:16px 18px;background:var(--surface);border:1px solid rgba(201,150,58,.22);border-radius:var(--rxl);padding:18px}
+.aoc-label{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.aoc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.aoc-table{font-family:var(--fd);font-size:22px;font-weight:600}
+.aoc-id{font-size:11px;color:var(--text-3);font-family:monospace;margin-bottom:2px}
+.tracking-steps{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--rl);padding:16px}
+.t-step{display:flex;align-items:center;gap:14px;padding:9px 0;position:relative}
+.t-step:not(:last-child)::after{content:'';position:absolute;left:11px;top:37px;width:2px;height:18px;background:var(--border-2)}
+.t-dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--border-2);background:var(--bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .4s ease}
+.t-dot.done{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.t-dot.active{background:var(--gold-dim);border-color:var(--gold);animation:pulse 1.5s ease infinite}
+.t-lbl{font-size:14px;font-weight:500}
+.t-lbl.done{color:var(--text-2)}
+.t-lbl.active{color:var(--gold);font-weight:600}
+.t-lbl.pending{color:var(--text-3)}
+.order-hist-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px;margin-bottom:10px;transition:all var(--t)}
+.order-hist-item:hover{border-color:var(--border-2)}
+.oh-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.oh-id{font-size:11px;color:var(--text-3);font-family:monospace}
+.oh-date{font-size:11px;color:var(--text-2)}
+.oh-items{font-size:13px;color:var(--text-2);margin-bottom:10px;line-height:1.5}
+.oh-footer{display:flex;justify-content:space-between;align-items:center}
+.oh-total{font-size:15px;font-weight:700;color:var(--gold)}
+
+/* ═══════════════════════════════════════════════════
+   PROFILE PAGE
+═══════════════════════════════════════════════════ */
+.prof-header{padding:22px 18px 18px;display:flex;align-items:center;gap:16px}
+.prof-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--surface));border:2px solid rgba(201,150,58,.3);display:flex;align-items:center;justify-content:center;font-size:28px;font-family:var(--fd);font-weight:600;color:var(--gold);flex-shrink:0}
+.prof-name{font-family:var(--fd);font-size:20px;font-weight:600}
+.prof-phone{font-size:13px;color:var(--text-2);margin-bottom:6px}
+.loyalty-tier-card{margin:0 18px 18px;background:linear-gradient(135deg,var(--surface) 0%,rgba(201,150,58,.07) 100%);border:1px solid rgba(201,150,58,.2);border-radius:var(--rl);padding:16px}
+.ltc-tier{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.ltc-title{font-family:var(--fd);font-size:18px;font-weight:600;margin-bottom:2px}
+.ltc-sub{font-size:12px;color:var(--text-2);margin-bottom:12px}
+.ltc-bar{height:5px;background:var(--border-2);border-radius:3px;overflow:hidden;margin-bottom:6px}
+.ltc-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+.ltc-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text-2)}
+.reward-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all var(--t);margin-bottom:10px}
+.reward-item.active-r{border-color:rgba(201,150,58,.25)}
+.reward-item.expired-r{opacity:.45}
+.reward-icon{width:44px;height:44px;border-radius:12px;background:var(--gold-dim);border:1px solid rgba(201,150,58,.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.reward-info{flex:1;min-width:0}
+.reward-lbl{font-size:14px;font-weight:600}
+.reward-streak{font-size:11px;color:var(--text-2)}
+.reward-exp{font-size:11px;color:var(--orange);margin-top:2px}
+.settings-list{padding:0 18px}
+.settings-item{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all var(--t)}
+.settings-item:hover .settings-lbl{color:var(--gold)}
+.settings-item:last-child{border-bottom:none}
+.settings-lbl{font-size:14px;font-weight:500}
+.settings-val{font-size:13px;color:var(--text-2)}
+.settings-arrow{font-size:18px;color:var(--text-3)}
+
+/* ═══════════════════════════════════════════════════
+   MISC
+═══════════════════════════════════════════════════ */
+.divider{height:1px;background:var(--border);margin:14px 0}
+.page-gap{height:20px}
+.page-gap-sm{height:12px}
+.empty-state{text-align:center;padding:48px 24px;color:var(--text-2);font-size:14px}
+.empty-state-icon{font-size:44px;margin-bottom:14px}
+.empty-state-title{font-family:var(--fd);font-size:18px;margin-bottom:6px;color:var(--text)}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     VIEW: AUTH
+════════════════════════════════════════════════ -->
+<div id="view-auth" class="view active">
+  <div class="auth-hero">
+    <div class="auth-emblem">🍽️</div>
+    <div class="auth-rest-name" id="a-name">The Lagos Kitchen</div>
+    <div class="auth-rest-tag" id="a-tag">Authentic Nigerian Cuisine</div>
+  </div>
+
+  <!-- Step 1: Phone -->
+  <div id="auth-phone" class="auth-card">
+    <div class="auth-step-title">Welcome 👋</div>
+    <div class="auth-step-sub">Enter your phone number to get started</div>
+    <div class="phone-row">
+      <div class="country-code">🇳🇬 +234</div>
+      <input class="input-field" id="phone-input" type="tel" inputmode="numeric"
+             placeholder="080 0000 0000" maxlength="11"
+             onkeydown="if(event.key==='Enter')goOTP()"/>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="goOTP()">Send OTP →</button>
+    <p class="auth-note">We'll send a 4-digit code to verify your number</p>
+  </div>
+
+  <!-- Step 2: OTP -->
+  <div id="auth-otp" class="auth-card hidden">
+    <div class="auth-step-title">Enter Code</div>
+    <div class="auth-step-sub" id="otp-sub">Sent to your number</div>
+    <div class="otp-grid">
+      <input class="otp-box" id="o1" maxlength="1" inputmode="numeric" oninput="onOTP(this,'o2')"/>
+      <input class="otp-box" id="o2" maxlength="1" inputmode="numeric" oninput="onOTP(this,'o3')"/>
+      <input class="otp-box" id="o3" maxlength="1" inputmode="numeric" oninput="onOTP(this,'o4')"/>
+      <input class="otp-box" id="o4" maxlength="1" inputmode="numeric" oninput="onOTP(this,null)"/>
+    </div>
+    <div class="auth-resend">Didn't receive it? <span onclick="showToast('OTP resent! (demo: 1234)')">Resend</span></div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="verifyOTP()">Verify</button>
+    <div class="auth-back" onclick="backPhone()">← Change number</div>
+  </div>
+
+  <!-- Step 3: Name -->
+  <div id="auth-name" class="auth-card hidden">
+    <div class="auth-step-title">Your Name?</div>
+    <div class="auth-step-sub" style="margin-bottom:18px">So we can greet you properly every visit 😊</div>
+    <input class="input-field" id="name-input" placeholder="First name" style="margin-bottom:14px"
+           onkeydown="if(event.key==='Enter')doSignup()"/>
+    <button class="btn btn-primary btn-full btn-lg" onclick="doSignup()">Let's go 🎉</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     VIEW: HOME
+════════════════════════════════════════════════ -->
+<div id="view-home" class="view">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title" id="h-name">—</div>
+      <div class="page-sub">DIGITAL MENU</div>
+    </div>
+    <button class="notif-btn" onclick="showToast('No new notifications')">
+      🔔<div class="notif-dot"></div>
+    </button>
+  </div>
+
+  <!-- Greeting -->
+  <div class="greeting-wrap">
+    <div>
+      <div class="greeting-time" id="g-time">Good evening</div>
+      <div class="greeting-name" id="g-name">—</div>
+      <div class="greeting-table" id="g-table">Table 5 · Scan active</div>
+    </div>
+  </div>
+
+  <!-- Loyalty banner -->
+  <div class="loyalty-banner" onclick="goTo('profile')">
+    <div class="loy-ring">
+      <svg width="54" height="54" viewBox="0 0 54 54">
+        <circle class="loy-ring-bg" cx="27" cy="27" r="22"/>
+        <circle class="loy-ring-fill" id="loy-fill" cx="27" cy="27" r="22"
+                stroke-dasharray="138.2" stroke-dashoffset="96"/>
+      </svg>
+      <span class="loy-ring-emoji">🔥</span>
+    </div>
+    <div class="loy-info">
+      <div class="loy-tier" id="loy-tier">Regular · 3 of 5 orders</div>
+      <div class="loy-title" id="loy-title">10% off coming soon!</div>
+      <div class="loy-sub" id="loy-sub">2 more orders to unlock reward</div>
+    </div>
+    <div class="loy-arrow">›</div>
+  </div>
+
+  <!-- Quick reorder -->
+  <div class="sec-row"><div class="sec-label">Order Again?</div></div>
+  <div class="reorder-card">
+    <div style="flex:1;min-width:0">
+      <div class="reorder-label">Last order</div>
+      <div class="reorder-items">Jollof Rice, Chapman, Suya Platter</div>
+      <div class="reorder-total">₦7,900</div>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="goTo('menu')">Reorder</button>
+  </div>
+
+  <!-- Featured -->
+  <div class="sec-row"><div class="sec-label">Featured</div></div>
+  <div class="featured-card" onclick="goTo('menu')">
+    <div class="feat-body">
+      <div class="feat-badge" id="feat-badge">Today's Special</div>
+      <div class="feat-name"  id="feat-name">—</div>
+      <div class="feat-desc"  id="feat-desc">—</div>
+      <div class="feat-price" id="feat-price">—</div>
+      <span class="feat-cta">Order Now →</span>
+    </div>
+    <div class="feat-emoji" id="feat-emoji">🍽️</div>
+  </div>
+
+  <div class="page-gap"></div>
+
+  <!-- Streaks -->
+  <div class="sec-row">
+    <div class="sec-label">Your Streaks</div>
+    <span class="sec-link" onclick="goTo('profile')">See all</span>
+  </div>
+  <div class="streak-scroll" id="home-streaks"></div>
+
+  <div class="page-gap" style="height:28px"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     VIEW: MENU
+════════════════════════════════════════════════ -->
+<div id="view-menu" class="view">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Menu</div>
+      <div class="page-sub" id="menu-tbl-label">Table 5</div>
+    </div>
+  </div>
+
+  <!-- AI Search -->
+  <div class="search-wrap">
+    <input id="search-input" placeholder="Search or ask AI… e.g. spicy under ₦3k"
+           oninput="filterMenu(this.value)"
+           onfocus="if(!this.value)showToast('Tip: Ask AI for meal suggestions! ✦')"/>
+    <span class="search-icon">✦</span>
+  </div>
+
+  <!-- Categories -->
+  <div class="cat-bar" id="cat-bar"></div>
+
+  <!-- Grid -->
+  <div class="menu-grid" id="menu-grid"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     VIEW: ORDERS
+════════════════════════════════════════════════ -->
+<div id="view-orders" class="view">
+
+  <div class="page-header">
+    <div class="page-title">Orders</div>
+    <span class="badge badge-orange pulse">1 Active</span>
+  </div>
+
+  <!-- Active order -->
+  <div class="active-order-card">
+    <div class="aoc-label">Active Order</div>
+    <div class="aoc-top">
+      <div>
+        <div class="aoc-id">#A3F91B</div>
+        <div class="aoc-table">Table 5</div>
+      </div>
+      <span class="badge badge-blue">Preparing</span>
+    </div>
+    <div class="tracking-steps">
+      <div class="t-step">
+        <div class="t-dot done">✓</div>
+        <span class="t-lbl done">Order received</span>
+      </div>
+      <div class="t-step">
+        <div class="t-dot active"></div>
+        <span class="t-lbl active">Preparing your food</span>
+      </div>
+      <div class="t-step">
+        <div class="t-dot"></div>
+        <span class="t-lbl pending">Ready for collection</span>
+      </div>
+      <div class="t-step">
+        <div class="t-dot"></div>
+        <span class="t-lbl pending">Served ✦</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="sec-row" style="margin-top:4px"><div class="sec-label">Order History</div></div>
+  <div style="padding:0 18px 24px" id="order-hist"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     VIEW: PROFILE
+════════════════════════════════════════════════ -->
+<div id="view-profile" class="view">
+
+  <div class="page-header">
+    <div class="page-title">Profile</div>
+    <button class="btn btn-sm btn-ghost" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Header -->
+  <div class="prof-header">
+    <div class="prof-avatar" id="prof-av">?</div>
+    <div>
+      <div class="prof-name"  id="prof-name">—</div>
+      <div class="prof-phone" id="prof-phone">+234 —</div>
+      <span class="badge badge-gold">🔥 Regular</span>
+    </div>
+  </div>
+
+  <!-- Loyalty tier card -->
+  <div class="loyalty-tier-card">
+    <div class="ltc-tier">Loyalty Status</div>
+    <div class="ltc-title">Regular Member</div>
+    <div class="ltc-sub">3 orders placed · 2 more to unlock reward</div>
+    <div class="ltc-bar"><div class="ltc-fill" style="width:60%"></div></div>
+    <div class="ltc-labels"><span>3 of 5 orders</span><span>10% off reward</span></div>
+  </div>
+
+  <!-- All Streaks -->
+  <div class="sec-row"><div class="sec-label">All Streaks</div></div>
+  <div class="streak-scroll" id="prof-streaks" style="margin-bottom:20px"></div>
+
+  <!-- Reward Wallet -->
+  <div class="sec-row"><div class="sec-label">Reward Wallet</div></div>
+  <div style="padding:0 18px;margin-bottom:20px" id="reward-wallet"></div>
+
+  <!-- Settings -->
+  <div class="sec-row"><div class="sec-label">Account</div></div>
+  <div class="settings-list">
+    <div class="settings-item" onclick="showToast('Name editing coming soon')">
+      <span class="settings-lbl">Edit Name</span>
+      <span class="settings-arrow">›</span>
+    </div>
+    <div class="settings-item">
+      <span class="settings-lbl">Notifications</span>
+      <span class="settings-val">On</span>
+    </div>
+    <div class="settings-item">
+      <span class="settings-lbl">Table</span>
+      <span class="settings-val" id="prof-table-val">Table 5</span>
+    </div>
+    <div class="settings-item" onclick="logout()">
+      <span class="settings-lbl" style="color:var(--red)">Sign Out</span>
+      <span class="settings-arrow" style="color:var(--red)">›</span>
+    </div>
+  </div>
+  <div style="height:36px"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     BOTTOM NAV
+════════════════════════════════════════════════ -->
+<nav class="bottom-nav hidden" id="bottom-nav">
+  <button class="nav-item active" id="nav-home" onclick="goTo('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+    Home
+  </button>
+  <button class="nav-item" id="nav-menu" onclick="goTo('menu')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Menu
+  </button>
+  <button class="nav-item" id="nav-orders" onclick="goTo('orders')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+    Orders
+  </button>
+  <button class="nav-item" id="nav-profile" onclick="goTo('profile')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Profile
+  </button>
+</nav>
+
+<!-- ════════════════════════════════════════════════
+     AI FAB
+════════════════════════════════════════════════ -->
+<button class="ai-fab hidden" id="ai-fab" onclick="openAI()">
+  <div class="ai-fab-ring"></div>
+  ✦
+</button>
+
+<!-- ════════════════════════════════════════════════
+     AI DRAWER
+════════════════════════════════════════════════ -->
+<div class="overlay" id="ai-overlay" onclick="closeAI()"></div>
+<div class="drawer" id="ai-drawer" style="z-index:800">
+  <div class="drawer-handle"></div>
+  <div class="ai-drawer-header">
+    <div class="ai-avatar">✦</div>
+    <div>
+      <div class="ai-name">SROS Assistant</div>
+      <div class="ai-sub">Menu · Recommendations · Support</div>
+    </div>
+    <button class="drawer-close" onclick="closeAI()">✕</button>
+  </div>
+  <div class="ai-messages" id="ai-msgs"></div>
+  <div class="ai-quick-btns" id="ai-quick-btns">
+    <button class="ai-qbtn" onclick="askAI('What\'s good today?')">What's good today?</button>
+    <button class="ai-qbtn" onclick="askAI('Something spicy under ₦3000')">Spicy under ₦3k</button>
+    <button class="ai-qbtn" onclick="askAI('Where\'s my order?')">Order status</button>
+    <button class="ai-qbtn" onclick="askAI('Show me all drinks')">All drinks</button>
+    <button class="ai-qbtn" onclick="askAI('Best meal under ₦2000')">Under ₦2k</button>
+  </div>
+  <div class="ai-input-row">
+    <input class="ai-input" id="ai-input" placeholder="Ask anything…"
+           onkeydown="if(event.key==='Enter')sendAI()"/>
+    <button class="ai-send" id="ai-send" onclick="sendAI()">→</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     CART DRAWER
+════════════════════════════════════════════════ -->
+<div class="overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="drawer" id="cart-drawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-header">
+    <div class="drawer-title">Your Order</div>
+    <button class="drawer-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-body" id="cart-body"></div>
+  <div class="drawer-footer hidden" id="cart-footer">
+    <textarea class="input-field" id="order-notes" placeholder="Special instructions (optional)…"
+              rows="2" style="margin-bottom:12px"></textarea>
+    <div class="cart-total-row">
+      <span class="cart-total-lbl">Total</span>
+      <span class="cart-total-amt" id="cart-total-amt">₦0</span>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="placeOrder()">Place Order</button>
+  </div>
+</div>
+
+<!-- Cart FAB (menu page only) -->
+<button class="cart-fab hidden" id="cart-fab" onclick="openCart()">
+  🛒 <span id="cfab-count">0</span> items
+  <span class="cart-fab-pill" id="cfab-total">₦0</span>
+</button>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   CONFIG (inlined)
+═══════════════════════════════════════════════════════ */
+const CFG = {
+  restaurantName:   'The Lagos Kitchen',
+  tagline:          'Authentic Nigerian Cuisine',
+  symbol:           '₦',
+  currency:         'NGN',
+  rewardExpiryDays: 7,
+  featured:         { id: 'm5', label: "Today's Special" },
+  streaks: [
+    { id:'regular',      type:'order_count',  icon:'🔥', label:'Regular',        desc:'Place 5 orders total',          target:5, reward:{ label:'10% off next order'         } },
+    { id:'jollof_lover', type:'meal_specific', icon:'🍛', label:'Jollof Lover',   desc:'Order Jollof Rice 3 times',     target:3, reward:{ label:'Free drink with your Jollof'} },
+    { id:'weekly_vip',   type:'activeness',   icon:'⚡', label:'Weekly Regular', desc:'Order twice within any 7 days', target:2, reward:{ label:'₦500 off any order'          } },
+    { id:'loyal',        type:'order_count',  icon:'👑', label:'Loyal Customer', desc:'Place 10 orders total',         target:10,reward:{ label:'15% off — VIP reward'        } }
+  ],
+  menu: [
+    { id:'m1',  name:'Jollof Rice',          cat:'Meals',    price:3500, desc:'Classic smoky jollof with assorted protein',            emoji:'🍛', popular:true  },
+    { id:'m2',  name:'Egusi Soup + Swallow', cat:'Meals',    price:4000, desc:'Rich melon seed soup with stockfish and assorted meat',  emoji:'🥘'              },
+    { id:'m3',  name:'Fried Rice',           cat:'Meals',    price:3500, desc:'Nigerian-style fried rice with vegetables and proteins', emoji:'🍚', popular:true  },
+    { id:'m4',  name:'Pounded Yam',          cat:'Meals',    price:1500, desc:'Smooth pounded yam, served with any soup',              emoji:'⚪'              },
+    { id:'m5',  name:'Catfish Pepper Soup',  cat:'Specials', price:2800, desc:'Spicy catfish pepper soup — house special',             emoji:'🐟', popular:true  },
+    { id:'m6',  name:'Suya Platter',         cat:'Specials', price:3200, desc:'Grilled spiced beef with onions and fresh tomatoes',     emoji:'🍢'              },
+    { id:'m7',  name:'Grilled Chicken',      cat:'Specials', price:4500, desc:'Half chicken, marinated and grilled to perfection',      emoji:'🍗'              },
+    { id:'m8',  name:'Chapman',              cat:'Drinks',   price:1200, desc:'Classic Nigerian cocktail — non-alcoholic',             emoji:'🥤'              },
+    { id:'m9',  name:'Fresh Zobo',           cat:'Drinks',   price:800,  desc:'House-made hibiscus drink, lightly sweetened',          emoji:'🍹'              },
+    { id:'m10', name:'Malt / Soft Drink',    cat:'Drinks',   price:600,  desc:'Maltina, Amstel Malt, or choice of soft drink',         emoji:'🥛'              },
+    { id:'m11', name:'Bottled Water',        cat:'Drinks',   price:300,  desc:'Eva or Ragolis — 75cl',                                 emoji:'💧'              }
+  ]
+};
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+const S = {
+  user: null,
+  tableId: '5',
+  cart: [],
+  currentCat: 'All',
+  aiLoading: false,
+  streakProgress: { regular:3, jollof_lover:1, weekly_vip:2, loyal:3 },
+  rewards: [
+    { id:'r1', streakId:'weekly_vip', label:'₦500 off any order', streakName:'Weekly Regular', icon:'⚡', expiresAt: Date.now() + 3*86400000 }
+  ],
+  orderHistory: [
+    { id:'B9K2X', items:'Jollof Rice × 1, Chapman × 2',     total:4700, date:'2 days ago' },
+    { id:'P5MNQ', items:'Suya Platter × 1, Fried Rice × 1', total:6700, date:'5 days ago' },
+    { id:'T8RZW', items:'Catfish Pepper Soup × 1, Zobo × 1', total:3600, date:'1 week ago' }
+  ]
+};
+
+/* ═══════════════════════════════════════════════════════
+   BOOT
+═══════════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  S.tableId = params.get('table') || '5';
+
+  document.getElementById('a-name').textContent = CFG.restaurantName;
+  document.getElementById('a-tag').textContent  = CFG.tagline;
+
+  const saved = localStorage.getItem('sros_demo_user');
+  if (saved) { S.user = JSON.parse(saved); enterApp(); }
+});
+
+/* ═══════════════════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════════════════ */
+function goOTP() {
+  const ph = document.getElementById('phone-input').value.trim();
+  if (ph.length < 10) { showToast('Enter a valid phone number','error'); return; }
+  show('auth-otp'); hide('auth-phone');
+  document.getElementById('otp-sub').textContent = `Sent to +234 ${ph}`;
+  document.getElementById('o1').focus();
+  showToast('Demo OTP: 1 2 3 4');
+}
+
+function onOTP(el, nextId) {
+  if (el.value.length === 1 && nextId) document.getElementById(nextId).focus();
+}
+
+function verifyOTP() {
+  const code = ['o1','o2','o3','o4'].map(id => document.getElementById(id).value).join('');
+  if (code !== '1234') {
+    showToast('Wrong code. Use 1234','error');
+    ['o1','o2','o3','o4'].forEach(id => {
+      const el = document.getElementById(id);
+      el.value = ''; el.classList.add('shake');
+      setTimeout(() => el.classList.remove('shake'), 400);
+    });
+    document.getElementById('o1').focus();
+    return;
+  }
+  const saved = localStorage.getItem('sros_demo_user');
+  if (saved) { S.user = JSON.parse(saved); enterApp(); return; }
+  show('auth-name'); hide('auth-otp');
+  document.getElementById('name-input').focus();
+}
+
+function doSignup() {
+  const n = document.getElementById('name-input').value.trim();
+  if (!n) { showToast('Enter your name','error'); return; }
+  S.user = { name: n, phone: document.getElementById('phone-input').value, uid: 'demo-'+Date.now() };
+  localStorage.setItem('sros_demo_user', JSON.stringify(S.user));
+  enterApp();
+}
+
+function backPhone() { show('auth-phone'); hide('auth-otp'); }
+
+function logout() {
+  localStorage.removeItem('sros_demo_user');
+  S.user = null; S.cart = [];
+  hide('bottom-nav'); hide('ai-fab'); document.getElementById('cart-fab').classList.add('hidden');
+  switchView('auth');
+  show('auth-phone'); hide('auth-otp'); hide('auth-name');
+  ['o1','o2','o3','o4'].forEach(id => document.getElementById(id).value = '');
+}
+
+/* ═══════════════════════════════════════════════════════
+   ENTER APP
+═══════════════════════════════════════════════════════ */
+function enterApp() {
+  show('bottom-nav'); show('ai-fab');
+  renderHome(); renderMenu(); renderOrders(); renderProfile();
+  addAIWelcome();
+  goTo('home');
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════ */
+function goTo(page) {
+  switchView(page);
+  document.querySelectorAll('.nav-item').forEach(el =>
+    el.classList.toggle('active', el.id === 'nav-' + page));
+  document.getElementById('cart-fab').classList.toggle('hidden', page !== 'menu' || !S.cart.length);
+  if (page === 'menu') updateCartFAB();
+}
+
+function switchView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+}
+
+function show(id) { document.getElementById(id).classList.remove('hidden'); }
+function hide(id) { document.getElementById(id).classList.add('hidden'); }
+
+/* ═══════════════════════════════════════════════════════
+   HOME
+═══════════════════════════════════════════════════════ */
+function renderHome() {
+  if (!S.user) return;
+  const hr = new Date().getHours();
+  const gt = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('h-name').textContent   = CFG.restaurantName;
+  document.getElementById('g-time').textContent   = gt;
+  document.getElementById('g-name').textContent   = S.user.name;
+  document.getElementById('g-table').textContent  = `Table ${S.tableId} · Scan active`;
+
+  const feat = CFG.menu.find(i => i.id === CFG.featured.id);
+  if (feat) {
+    document.getElementById('feat-badge').textContent = CFG.featured.label;
+    document.getElementById('feat-name').textContent  = feat.name;
+    document.getElementById('feat-desc').textContent  = feat.desc;
+    document.getElementById('feat-price').textContent = fmt(feat.price);
+    document.getElementById('feat-emoji').textContent = feat.emoji;
+  }
+
+  document.getElementById('home-streaks').innerHTML =
+    CFG.streaks.slice(0, 3).map(s => streakCard(s)).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   STREAK CARD
+═══════════════════════════════════════════════════════ */
+function streakCard(s) {
+  const prog = S.streakProgress[s.id] || 0;
+  const pct  = Math.min(100, Math.round(prog / s.target * 100));
+  const done = pct >= 100;
+  return `<div class="streak-card${done?' done':''}">
+    ${done ? '<div class="streak-done-badge">✓</div>' : ''}
+    <div class="streak-icon">${s.icon}</div>
+    <div class="streak-lbl">${s.label}</div>
+    <div class="streak-desc">${s.desc}</div>
+    <div class="streak-bar"><div class="streak-fill" style="width:${pct}%"></div></div>
+    <div class="streak-prog">${prog} of ${s.target}${done ? ' · Unlocked!' : ''}</div>
+    <div class="streak-reward">${s.reward.label}</div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MENU
+═══════════════════════════════════════════════════════ */
+function renderMenu() {
+  document.getElementById('menu-tbl-label').textContent = `Table ${S.tableId}`;
+  const cats = ['All', ...new Set(CFG.menu.map(i => i.cat))];
+  document.getElementById('cat-bar').innerHTML = cats.map(c =>
+    `<button class="cat-tab${c==='All'?' active':''}" onclick="filterCat('${c}')">${c}</button>`
+  ).join('');
+  renderGrid();
+}
+
+function filterCat(cat) {
+  S.currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.toggle('active', t.textContent === cat));
+  renderGrid();
+}
+
+function filterMenu(q) {
+  if (!q) { renderGrid(); return; }
+  const f = CFG.menu.filter(i =>
+    i.name.toLowerCase().includes(q.toLowerCase()) ||
+    i.desc.toLowerCase().includes(q.toLowerCase()) ||
+    i.cat.toLowerCase().includes(q.toLowerCase())
+  );
+  document.getElementById('menu-grid').innerHTML = f.length
+    ? f.map((i,idx) => menuCard(i,idx)).join('')
+    : '<div class="empty-state"><div class="empty-state-icon">🔍</div><div>No items match that search</div></div>';
+}
+
+function renderGrid() {
+  const items = S.currentCat === 'All' ? CFG.menu : CFG.menu.filter(i => i.cat === S.currentCat);
+  document.getElementById('menu-grid').innerHTML = items.map((i,idx) => menuCard(i,idx)).join('');
+}
+
+function menuCard(item, idx) {
+  const inCart = S.cart.find(c => c.id === item.id);
+  return `<div class="menu-card" style="animation-delay:${idx*.04}s">
+    <div class="menu-emoji-box">
+      ${item.emoji}
+      ${item.popular ? '<span class="pop-badge">Popular</span>' : ''}
+    </div>
+    <div class="menu-body">
+      <div class="menu-name">${item.name}</div>
+      <div class="menu-desc">${item.desc}</div>
+      <div class="menu-footer">
+        <span class="menu-price">${fmt(item.price)}</span>
+        <button class="add-btn${inCart?' in-cart':''}" onclick="addToCart('${item.id}')">
+          ${inCart ? inCart.qty+'✓' : '+'}
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CART
+═══════════════════════════════════════════════════════ */
+function addToCart(id) {
+  const item = CFG.menu.find(i => i.id === id);
+  if (!item) return;
+  const ex = S.cart.find(c => c.id === id);
+  if (ex) ex.qty++; else S.cart.push({ ...item, qty: 1 });
+  renderGrid(); updateCartFAB();
+  showToast(item.name + ' added');
+}
+
+function changeQty(id, d) {
+  const item = S.cart.find(c => c.id === id);
+  if (!item) return;
+  item.qty += d;
+  if (item.qty <= 0) S.cart = S.cart.filter(c => c.id !== id);
+  renderCartBody(); renderGrid(); updateCartFAB();
+}
+
+function cartTotal() { return S.cart.reduce((s,i) => s + i.price * i.qty, 0); }
+function cartCount() { return S.cart.reduce((s,i) => s + i.qty, 0); }
+
+function updateCartFAB() {
+  const cnt = cartCount();
+  document.getElementById('cfab-count').textContent = cnt;
+  document.getElementById('cfab-total').textContent = fmt(cartTotal());
+  document.getElementById('cart-fab').classList.toggle('hidden', cnt === 0 || document.getElementById('view-menu').style.display === 'none');
+}
+
+function renderCartBody() {
+  const body = document.getElementById('cart-body');
+  const foot = document.getElementById('cart-footer');
+  document.getElementById('cart-total-amt').textContent = fmt(cartTotal());
+  if (!S.cart.length) {
+    body.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🛒</div>
+      <div class="empty-state-title">Empty order</div>
+      <div>Add items from the menu to get started</div></div>`;
+    foot.classList.add('hidden'); return;
+  }
+  foot.classList.remove('hidden');
+  body.innerHTML = S.cart.map(i => `
+    <div class="cart-item">
+      <div class="cart-emoji">${i.emoji}</div>
+      <div class="cart-info">
+        <div class="cart-iname">${i.name}</div>
+        <div class="cart-iprice">${fmt(i.price * i.qty)}</div>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('${i.id}',-1)">−</button>
+        <span class="qty-num">${i.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${i.id}',1)">+</button>
+      </div>
+    </div>`).join('');
+}
+
+function openCart()  { renderCartBody(); openDrawer('cart'); }
+function closeCart() { closeDrawer('cart'); }
+
+function openDrawer(id) {
+  document.getElementById(id+'-overlay').classList.add('open');
+  document.getElementById(id+'-drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer(id) {
+  document.getElementById(id+'-overlay').classList.remove('open');
+  document.getElementById(id+'-drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function placeOrder() {
+  if (!S.cart.length) return;
+  const items = S.cart.map(i => `${i.name} × ${i.qty}`).join(', ');
+  const total = cartTotal();
+  S.orderHistory.unshift({ id: Math.random().toString(36).slice(2,7).toUpperCase(), items, total, date: 'Just now' });
+  S.cart = [];
+  updateCartFAB(); renderGrid(); renderOrders();
+  closeCart();
+  showToast('Order placed! Kitchen notified 🎉','success');
+  setTimeout(() => goTo('orders'), 600);
+}
+
+/* ═══════════════════════════════════════════════════════
+   ORDERS
+═══════════════════════════════════════════════════════ */
+function renderOrders() {
+  document.getElementById('order-hist').innerHTML = S.orderHistory.map(o => `
+    <div class="order-hist-item">
+      <div class="oh-top">
+        <span class="oh-id">#${o.id}</span>
+        <span class="oh-date">${o.date}</span>
+      </div>
+      <div class="oh-items">${o.items}</div>
+      <div class="oh-footer">
+        <span class="oh-total">${fmt(o.total)}</span>
+        <span class="badge badge-green">Served ✦</span>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   PROFILE
+═══════════════════════════════════════════════════════ */
+function renderProfile() {
+  if (!S.user) return;
+  document.getElementById('prof-av').textContent     = S.user.name[0].toUpperCase();
+  document.getElementById('prof-name').textContent   = S.user.name;
+  document.getElementById('prof-phone').textContent  = '+234 ' + (S.user.phone || '080 000 0000');
+  document.getElementById('prof-table-val').textContent = 'Table ' + S.tableId;
+  document.getElementById('prof-streaks').innerHTML  = CFG.streaks.map(s => streakCard(s)).join('');
+
+  const wallet = document.getElementById('reward-wallet');
+  if (!S.rewards.length) {
+    wallet.innerHTML = `<div style="color:var(--text-2);font-size:13px;padding:8px 0">Complete a streak to earn rewards here.</div>`;
+    return;
+  }
+  wallet.innerHTML = S.rewards.map(r => {
+    const days = Math.max(0, Math.ceil((r.expiresAt - Date.now()) / 86400000));
+    return `<div class="reward-item active-r">
+      <div class="reward-icon">${r.icon}</div>
+      <div class="reward-info">
+        <div class="reward-lbl">${r.label}</div>
+        <div class="reward-streak">${r.streakName}</div>
+        <div class="reward-exp">Expires in ${days} day${days !== 1 ? 's' : ''}</div>
+      </div>
+      <button class="btn btn-sm btn-primary" onclick="activateReward('${r.id}')">Activate</button>
+    </div>`;
+  }).join('');
+}
+
+function activateReward(id) {
+  S.rewards = S.rewards.filter(r => r.id !== id);
+  renderProfile();
+  showToast('Reward activated! Kitchen has been notified 🔔','success');
+}
+
+/* ═══════════════════════════════════════════════════════
+   AI CHAT
+═══════════════════════════════════════════════════════ */
+function addAIWelcome() {
+  const msgs = document.getElementById('ai-msgs');
+  msgs.innerHTML = '';
+  addMsg(`Hi ${S.user?.name?.split(' ')[0] || 'there'} 👋 I'm your SROS assistant. I can help you find a great meal, tell you about anything on the menu, or check on your order. What are you in the mood for?`, 'bot');
+}
+
+function openAI() {
+  openDrawer('ai');
+  setTimeout(() => document.getElementById('ai-input').focus(), 380);
+}
+function closeAI() { closeDrawer('ai'); }
+
+function addMsg(text, role) {
+  const box = document.getElementById('ai-msgs');
+  const el  = document.createElement('div');
+  el.className = 'ai-msg ' + role;
+  el.innerHTML = text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
+}
+
+function showTyping() {
+  const box = document.getElementById('ai-msgs');
+  const el  = document.createElement('div');
+  el.className = 'ai-msg bot'; el.id = 'ai-typing';
+  el.innerHTML = `<div class="ai-typing-row"><span></span><span></span><span></span></div>`;
+  box.appendChild(el); box.scrollTop = box.scrollHeight;
+}
+function hideTyping() { document.getElementById('ai-typing')?.remove(); }
+
+async function sendAI() {
+  const input = document.getElementById('ai-input');
+  const text  = input.value.trim();
+  if (!text || S.aiLoading) return;
+  input.value = '';
+  askAI(text);
+}
+
+async function askAI(prompt) {
+  if (S.aiLoading) return;
+  S.aiLoading = true;
+  document.getElementById('ai-send').disabled = true;
+  document.getElementById('ai-quick-btns').style.display = 'none';
+  addMsg(prompt, 'user');
+  showTyping();
+
+  const menuCtx = CFG.menu.map(i =>
+    `${i.name} (${i.cat}) — ${CFG.symbol}${i.price} — ${i.desc}`
+  ).join('\n');
+
+  const sys = `You are the AI assistant for ${CFG.restaurantName}, a Nigerian restaurant.
+Help customers find meals, answer menu questions, and assist with order queries.
+Be friendly, concise, use emojis naturally. Keep responses under 120 words.
+Current menu:\n${menuCtx}
+Customer: ${S.user?.name || 'Guest'} · Table ${S.tableId} · Currency: ${CFG.symbol}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:sys,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    hideTyping();
+    addMsg(data.content?.[0]?.text || 'Sorry, try again.', 'bot');
+  } catch(e) {
+    hideTyping();
+    addMsg(demoReply(prompt), 'bot');
+  }
+
+  S.aiLoading = false;
+  document.getElementById('ai-send').disabled = false;
+}
+
+function demoReply(p) {
+  const q = p.toLowerCase();
+  if (q.includes('spicy')||q.includes('pepper'))
+    return `For something spicy, go with the **Catfish Pepper Soup** 🐟 at ${CFG.symbol}2,800 — it's today's special and absolutely fiery. The **Suya Platter** is also a great pick if you want dry, smoky heat. Want me to add one?`;
+  if (q.includes('drink'))
+    return `Drinks available:\n• Chapman 🥤 — ${CFG.symbol}1,200 (crowd favourite)\n• Fresh Zobo 🍹 — ${CFG.symbol}800\n• Malt / Soft Drink 🥛 — ${CFG.symbol}600\n• Bottled Water 💧 — ${CFG.symbol}300`;
+  if (q.includes('2000')||q.includes('2k')||q.includes('cheap')||q.includes('budget'))
+    return `Under ${CFG.symbol}2,000 you have:\n• Pounded Yam ⚪ — ${CFG.symbol}1,500\n• Malt / Soft Drink 🥛 — ${CFG.symbol}600\n• Fresh Zobo 🍹 — ${CFG.symbol}800\n• Bottled Water 💧 — ${CFG.symbol}300`;
+  if (q.includes('3000')||q.includes('3k'))
+    return `Under ${CFG.symbol}3,000 I'd go with **Catfish Pepper Soup** 🐟 (${CFG.symbol}2,800) — it's the house special, super filling, and absolutely packed with flavour. Highly recommend!`;
+  if (q.includes('order')||q.includes('status'))
+    return `Your current order is **Preparing** 🍳 — the kitchen has it. Usually takes 10–15 minutes. I'll update you when it's ready!`;
+  if (q.includes('good')||q.includes('recommend')||q.includes('popular')||q.includes('today'))
+    return `Top picks right now:\n1. 🍛 **Jollof Rice** — always a winner (${CFG.symbol}3,500)\n2. 🐟 **Catfish Pepper Soup** — today's special (${CFG.symbol}2,800)\n3. 🍢 **Suya Platter** — smoky and satisfying (${CFG.symbol}3,200)`;
+  return `Happy to help! You can ask me to recommend a meal, filter by budget, describe any dish, or check your order status 😊 What do you need?`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════ */
+function fmt(n) { return CFG.symbol + (n||0).toLocaleString(); }
+
+let _toastTimer;
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast show${type ? ' t-'+type : ''}`;
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => t.className = 'toast', 2800);
+}
+</script>
+</body>
+</html>
